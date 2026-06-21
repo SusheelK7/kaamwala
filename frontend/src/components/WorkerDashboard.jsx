@@ -7,7 +7,7 @@ import api from '../api';
 import Navbar from './Navbar';
 import WorkerPayoutSettings from './WorkerPayoutSettings';
 import WorkerWithdrawal from './WorkerWithdrawal';
-import { BadgeCheck, Clock, MapPin, Phone, Calendar, DollarSign, XCircle, CheckCircle, CreditCard, Send } from 'lucide-react';
+import { BadgeCheck, Clock, MapPin, Phone, Calendar, XCircle, CheckCircle, CreditCard, Send } from 'lucide-react';
 import './WorkerDashboard.css';
 
 const WorkerDashboard = () => {
@@ -299,7 +299,7 @@ const WorkerDashboard = () => {
                                             </div>
                                             <div className="detail-item">
                                                 <span className="detail-label">Price</span>
-                                                <span className="detail-value"><DollarSign size={14} /> Rs {booking.price}</span>
+                                                <span className="detail-value"> Rs {booking.price}</span>
                                             </div>
                                             <div className="detail-item">
                                                 <span className="detail-label">Date & Time</span>
