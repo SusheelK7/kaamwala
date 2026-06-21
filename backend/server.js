@@ -1,5 +1,5 @@
+require('dotenv').config();
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const http = require('http'); // Import http
@@ -11,8 +11,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 
-// Load env vars
-dotenv.config();
+
 
 // Connect to database
 connectDB();
