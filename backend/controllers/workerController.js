@@ -280,8 +280,8 @@ const requestWithdrawal = async (req, res) => {
             return res.status(404).json({ message: 'Worker not found' });
         }
 
-        // Check available balance (including 20% fee)
-        const companyFee = amount * 0.20; // 20% fee
+        // Check available balance (including 5% fee)
+        const companyFee = amount * 0.05; // 5% fee
         const totalDeduction = amount + companyFee;
         
         if (user.availableBalance < totalDeduction) {
@@ -325,7 +325,7 @@ const requestWithdrawal = async (req, res) => {
                 requestedAmount: amount,
                 companyFee: companyFee,
                 netAmount: amount - companyFee,
-                feePercentage: 20
+                feePercentage: 5
             }
         });
     } catch (error) {

@@ -306,7 +306,7 @@ const approveWithdrawalRequest = async (req, res) => {
             return res.status(404).json({ message: 'Worker not found' });
         }
 
-        // Calculate total deduction: requested amount + 20% company fee
+        // Calculate total deduction: requested amount + 5% company fee
         const totalDeduction = request.amount + request.companyFee;
 
         // Verify worker has sufficient balance
@@ -316,7 +316,7 @@ const approveWithdrawalRequest = async (req, res) => {
             });
         }
 
-        // Deduct from available balance (amount + 20% fee)
+        // Deduct from available balance (amount + 5% fee)
         worker.availableBalance -= totalDeduction;
         await worker.save();
 

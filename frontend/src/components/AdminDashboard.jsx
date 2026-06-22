@@ -432,7 +432,7 @@ const AdminDashboard = () => {
                         {stats && withdrawalFeesData.length > 0 && (
                             <div style={{ ...cardStyle, marginBottom: '40px' }}>
                                 <h3 style={{ marginTop: '0' }}>Withdrawal Fees by Status</h3>
-                                <p style={{ color: '#6b7280', fontSize: '14px', margin: '0 0 20px 0' }}>Company earnings from 20% withdrawal fees</p>
+                                <p style={{ color: '#6b7280', fontSize: '14px', margin: '0 0 20px 0' }}>Company earnings from 5% withdrawal fees</p>
                                 <ResponsiveContainer width="100%" height={300}>
                                     <BarChart data={withdrawalFeesData}>
                                         <CartesianGrid strokeDasharray="3 3" />

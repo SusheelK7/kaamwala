@@ -22,7 +22,7 @@ const server = http.createServer(app); // Create HTTP server
 // Initialize Socket.io (CORS handled inside socket config too)
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"], // Allow Frontend URL
+        origin: ["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:5174", "http://127.0.0.1:5174", "http://localhost:3000"], // Allow Frontend URL
         methods: ["GET", "POST"],
         credentials: true
     }
@@ -61,6 +61,8 @@ const allowedOrigins = [
     process.env.FRONTEND_URL,
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
     "http://localhost:3000"
 ].filter(Boolean); // Filter out undefined if env var is missing
 app.use(cors({
