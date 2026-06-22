@@ -260,6 +260,7 @@ const AdminDashboard = () => {
     );
     const filteredComplaints = complaints.filter(c =>
         !complaintSearch ||
+        c.ticketId?.toLowerCase().includes(complaintSearch.toLowerCase()) ||
         c.subject?.toLowerCase().includes(complaintSearch.toLowerCase()) ||
         c.userId?.name?.toLowerCase().includes(complaintSearch.toLowerCase()) ||
         c.status?.toLowerCase().includes(complaintSearch.toLowerCase())
@@ -755,7 +756,7 @@ const AdminDashboard = () => {
                                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                     <input
                                         type="text"
-                                        placeholder="Search tickets..."
+                                        placeholder="Search by ticket ID, subject, user, or status..."
                                         value={complaintSearch}
                                         onChange={e => { setComplaintSearch(e.target.value); setComplaintPage(1); }}
                                         style={searchInputStyle}
