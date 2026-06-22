@@ -37,24 +37,40 @@ const Services = () => {
                     params.area = locationSearch.split(',')[0].trim();
                 }
 
+                console.log('[Services] Fetching workers with params:', params);
                 const res = await api.get('/workers/search', { params });
+                console.log('[Services] API Response:', res.data);
 
-                const mappedProviders = res.data.map(worker => ({
-                    id: worker._id,
-                    userId: worker.userId?._id, // Keep userId for reference if needed
-                    name: worker.userId?.name || 'Worker',
-                    specialty: worker.skill,
-                    location: `${worker.area}, ${worker.city}`,
-                    rating: worker.averageRating > 0 ? worker.averageRating.toFixed(1) : 'New',
-                    reviews: worker.reviewsCount || 0,
-                    price: worker.hourlyRate || 500,
-                    image: worker.profilePic || `https://i.pravatar.cc/300?u=${worker._id}`,
-                    bio: `Professional ${worker.skill} available in ${worker.area}. Availability: ${worker.availability}`
-                }));
+                if (!res.data || res.data.length === 0) {
+                    console.warn('[Services] No workers returned from API');
+                    setProviders([]);
+                    return;
+                }
 
+                const mappedProviders = res.data.map(worker => {
+                    if (!worker.userId) {
+                        console.warn('[Services] Worker with null userId:', worker._id);
+                        return null;
+                    }
+                    return {
+                        id: worker._id,
+                        userId: worker.userId?._id,
+                        name: worker.userId?.name || 'Worker',
+                        specialty: worker.skill,
+                        location: `${worker.area}, ${worker.city}`,
+                        rating: worker.averageRating > 0 ? worker.averageRating.toFixed(1) : 'New',
+                        reviews: worker.reviewsCount || 0,
+                        price: worker.hourlyRate || 500,
+                        image: worker.profilePic || `https://i.pravatar.cc/300?u=${worker._id}`,
+                        bio: `Professional ${worker.skill} available in ${worker.area}. Availability: ${worker.availability}`
+                    };
+                }).filter(Boolean); // Remove null entries
+
+                console.log('[Services] Mapped providers:', mappedProviders);
                 setProviders(mappedProviders);
             } catch (error) {
-                console.error("Error fetching workers", error);
+                console.error("[Services] Error fetching workers:", error.response?.data || error.message);
+                setProviders([]);
             }
         };
 

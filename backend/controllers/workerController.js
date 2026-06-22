@@ -104,20 +104,23 @@ const searchWorkers = async (req, res) => {
         // Fetch completed jobs count for each worker
         const Booking = require('../models/Booking');
         const enrichedWorkers = await Promise.all(
-            workers.map(async (worker) => {
-                const completedJobs = await Booking.countDocuments({
-                    workerId: worker.userId._id,
-                    status: 'completed'
-                });
-                const workerObj = worker.toObject();
-                workerObj.completedJobs = completedJobs;
-                return workerObj;
-            })
+            workers
+                .filter(worker => worker.userId) // Filter out orphaned profiles with no user
+                .map(async (worker) => {
+                    const completedJobs = await Booking.countDocuments({
+                        workerId: worker.userId._id,
+                        status: 'completed'
+                    });
+                    const workerObj = worker.toObject();
+                    workerObj.completedJobs = completedJobs;
+                    return workerObj;
+                })
         );
 
+        console.log(`[searchWorkers] Found ${workers.length} profiles total, ${enrichedWorkers.length} with valid users, query:`, query);
         res.json(enrichedWorkers);
     } catch (error) {
-        console.error(error);
+        console.error('[searchWorkers Error]:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 };
@@ -130,6 +133,11 @@ const getWorkerById = async (req, res) => {
         const worker = await WorkerProfile.findOne({ userId: req.params.id }).populate('userId', 'name email phone');
         if (!worker) {
             return res.status(404).json({ message: 'Worker not found' });
+        }
+
+        // Check if userId was populated (user still exists)
+        if (!worker.userId) {
+            return res.status(404).json({ message: 'Worker user not found (orphaned profile)' });
         }
 
         // Count completed jobs
@@ -148,7 +156,7 @@ const getWorkerById = async (req, res) => {
 
         res.json(workerObj);
     } catch (error) {
-        console.error(error);
+        console.error('[getWorkerById Error]:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 };
