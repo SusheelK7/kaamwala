@@ -193,14 +193,14 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleDeleteBooking = async (bookingId) => {
-        if (!window.confirm("Delete this booking permanently?")) return;
+    const handleClearHistory = (bookingId) => {
+        if (!window.confirm("Clear this booking from view? (Data remains in database)")) return;
         try {
-            await api.delete(`/admin/bookings/${bookingId}`);
             setRecentBookings(recentBookings.filter(b => b._id !== bookingId));
+            toast.success("Booking cleared from view");
         } catch (error) {
             console.error(error);
-            alert("Failed to delete booking");
+            alert("Failed to clear booking");
         }
     };
 
@@ -727,13 +727,13 @@ const AdminDashboard = () => {
                                                     </td>
                                                     <td style={{ padding: '12px' }}>
                                                         <button
-                                                            onClick={() => handleDeleteBooking(booking._id)}
+                                                            onClick={() => handleClearHistory(booking._id)}
                                                             style={{
-                                                                background: '#fee2e2', color: '#dc2626', border: 'none',
+                                                                background: '#ffc1c1', color: '#92400e', border: 'none',
                                                                 padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', fontWeight: 600
                                                             }}
                                                         >
-                                                            Delete
+                                                            Remove
                                                         </button>
                                                     </td>
                                                 </tr>
